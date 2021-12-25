@@ -14,6 +14,7 @@ public class XMLStart {
         File inputXML =
                 new File(Paths.get("").toAbsolutePath() + File.separator + "input.xml");
         ArrayList<XMLNode> parsedXML = XMLParser.parseXMLToArrayList(inputXML);
-        int i = 0;
+        System.out.println(
+                "Root node has " + parsedXML.get(0).getXmlNodes().size() + " element(s).");
     }
 }

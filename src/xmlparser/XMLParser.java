@@ -21,23 +21,28 @@ public class XMLParser {
     private static ArrayList<XMLNode> getXMLNodesFromNodeList(NodeList nodeList) {
         ArrayList<XMLNode> xmlNodes = new ArrayList<>();
         for (int i = 0; i < nodeList.getLength(); i++) {
-            Node node = nodeList.item(i);
-            if (node instanceof Element) {
-                XMLNode xmlNode = new XMLNode();
-                xmlNodes.add(xmlNode);
-                Element element = (Element) node;
-                xmlNode.setTagName(element.getTagName());
-                NamedNodeMap attributes = element.getAttributes();
-                for (int j = 0; j < attributes.getLength(); j++) {
-                    Node attributeNode = attributes.item(j);
-                    xmlNode.getXmlFields().put(attributeNode.getNodeName(),
-                            attributeNode.getNodeValue());
-                }
-                NodeList children = element.getChildNodes();
-                xmlNode.setXmlNodes(getXMLNodesFromNodeList(children));
-            }
+            parseNodeListAtGivenIndex(nodeList, xmlNodes, i);
         }
         return xmlNodes;
+    }
+
+    private static void parseNodeListAtGivenIndex(NodeList nodeList, ArrayList<XMLNode> xmlNodes,
+                                                  int i) {
+        Node node = nodeList.item(i);
+        if (node instanceof Element) {
+            XMLNode xmlNode = new XMLNode();
+            xmlNodes.add(xmlNode);
+            Element element = (Element) node;
+            xmlNode.setTagName(element.getTagName());
+            NamedNodeMap attributes = element.getAttributes();
+            for (int j = 0; j < attributes.getLength(); j++) {
+                Node attributeNode = attributes.item(j);
+                xmlNode.getXmlFields().put(attributeNode.getNodeName(),
+                        attributeNode.getNodeValue());
+            }
+            NodeList children = element.getChildNodes();
+            xmlNode.setXmlNodes(getXMLNodesFromNodeList(children));
+        }
     }
 
     private static Document getXmlParsedToDocument(File xmlSourceFile)
